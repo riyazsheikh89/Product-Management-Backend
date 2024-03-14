@@ -32,6 +32,33 @@ const signup = async (req, res) => {
     }
 }
 
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email });
+        // if user is not present or invalid input
+        if (!user || !user.comparePassword(password)) {
+            throw "You have entered incorrect email or password!";
+        }
+
+        const token = user.generateToken();
+        return res.status(200).json({
+            success: true,
+            message: "Successfuly loged into your account",
+            data: token,
+            err: {}
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong while login!",
+            data: {},
+            err: error
+        });
+    }
+}
 
 function validateInputData(inputData) {
     if (!inputData.name || !inputData.email || !inputData.password) {
@@ -56,4 +83,5 @@ function validateInputData(inputData) {
 
 module.exports = {
     signup,
+    login
 }

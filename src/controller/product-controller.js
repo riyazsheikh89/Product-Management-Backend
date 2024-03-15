@@ -27,7 +27,7 @@ const getProducts = async (req, res) => {
     }
 }
 
-// API: /api/v1//product/:id
+// API: /api/v1/product/:id
 const getProduct = async (req, res) => {
     try {
         const productId = req.params.id;
@@ -49,7 +49,33 @@ const getProduct = async (req, res) => {
     }
 }
 
+// API: /api/v1/product/update/:id
+const updateProduct = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const updatedProduct = await Product.findOneAndUpdate(
+            {_id: productId}, 
+            req.body,
+            {new: true}
+        );
+        return res.status(200).json({
+            success: true,
+            message: "Successfuly updated the document",
+            data: updatedProduct,
+            err: {}
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong while updating the document",
+            data: {},
+            err: error
+        });
+    }
+}
+
 module.exports = {
     getProducts,
-    getProduct
+    getProduct,
+    updateProduct
 }

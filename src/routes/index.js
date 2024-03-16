@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { signup, login } = require("../controller/user-controller");
+const { signup, login, userinfo } = require("../controller/user-controller");
 const { getProducts, getProduct, updateProduct } = require("../controller/product-controller");
 const { createReview, updateReviewStatus } = require("../controller/review-controller");
 
@@ -11,6 +11,7 @@ const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/login", login);
+router.get("/me", authentication, userinfo);    // USER INFO
 
 router.get("/get-products", authentication, getProducts);   // multiple
 router.get("/product/:id", authentication, getProduct);     // single

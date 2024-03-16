@@ -60,6 +60,23 @@ const login = async (req, res) => {
     }
 }
 
+const userinfo = async (req, res) => {
+    try {
+        const data = await User.findById({ _id: req.user._id }).select("-password");
+        return res.status(200).json({
+            success: true,
+            message: "Successfuly fetched user information",
+            data,
+            err: {}
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            err: error
+        });
+    }
+}
+
 function validateInputData(inputData) {
     if (!inputData.name || !inputData.email || !inputData.password) {
         return "All fields are mandatory!"
@@ -83,5 +100,6 @@ function validateInputData(inputData) {
 
 module.exports = {
     signup,
-    login
+    login,
+    userinfo
 }

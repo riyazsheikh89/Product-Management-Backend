@@ -13,7 +13,7 @@ const signup = async (req, res) => {
 
         // if the user already exist
         const user = await User.findOne({ email });
-        if (user) throw "This email is already exist!"
+        if (user) return res.status(403).send("This email is already exist!");
 
         const response = await User.create(input);
         return res.status(201).json({

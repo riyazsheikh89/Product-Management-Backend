@@ -48,8 +48,28 @@ const updateReviewStatus = async (req, res) => {
     }
 }
 
+const getPendingReviews = async (req, res) => {
+    try {
+        const pendingReviews = await Review.find({status: "PENDING"});
+        return res.status(200).json({
+            success: true,
+            message: "Successfuly fetched pending reviews",
+            data: pendingReviews,
+            err: {}
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Unable to fetch pending reviews!",
+            data: {},
+            err: error
+        })
+    }
+}
+
 
 module.exports = {
     createReview,
-    updateReviewStatus
+    updateReviewStatus,
+    getPendingReviews
 }

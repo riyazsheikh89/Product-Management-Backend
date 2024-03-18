@@ -9,6 +9,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+app.get("/", (req, res) => {
+    res.send("<h1>Server is running perfectly</h1>");
+})
 app.use('/api/v1', v1Routes);
 
 app.listen(PORT, async () => {

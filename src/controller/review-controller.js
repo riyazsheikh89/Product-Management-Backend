@@ -26,7 +26,6 @@ const updateReviewStatus = async (req, res) => {
             status: req.body.status,
             admin: req.user._id
         }
-        console.log(reviewId, data);
         const response = await Review.findOneAndUpdate(
             {_id: reviewId},
             data,
@@ -67,9 +66,48 @@ const getPendingReviews = async (req, res) => {
     }
 }
 
+const getReviewsByAuthor = async (req, res) => {
+    try {
+        const reviews = await Review.find({author: req.user._id});
+        return res.status(200).json({
+            success: true,
+            message: "Successfuly fetched all reviews of an author",
+            data: reviews,
+            err: {}
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Unable to fetch all reviews of an author",
+            data: {},
+            err: error
+        });
+    }
+}
+
+const getReviewsByAdmin = async (req, res) => {
+    try {
+        const reviews = await Review.find({admin: req.user._id});
+        return res.status(200).json({
+            success: true,
+            message: "Successfuly fetched all reviews of an author",
+            data: reviews,
+            err: {}
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Unable to fetch all reviews of an author",
+            data: {},
+            err: error
+        });
+    }
+}
 
 module.exports = {
     createReview,
     updateReviewStatus,
-    getPendingReviews
+    getPendingReviews,
+    getReviewsByAuthor,
+    getReviewsByAdmin
 }
